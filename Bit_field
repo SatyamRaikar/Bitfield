@@ -1,0 +1,47 @@
+#include <stdio.h>
+#include <stdint.h>
+
+// Define a structure named 'data'
+struct data
+{
+  uint8_t crc : 4;         // 4 bits for CRC
+  uint8_t status : 2;      // 2 bits for Status
+  uint16_t payload : 10;   // 10 bits for Payload
+  uint8_t bat : 5;         // 5 bits for Battery
+  uint8_t sensor : 3;      // 3 bits for Sensor
+  uint8_t addr_long : 4;   // 4 bits for Long Address
+  uint8_t addr_short : 3;  // 3 bits for Short Address
+  uint8_t led_status : 1;  // 1 bit for LED Status
+};
+
+int main()
+{
+  // Declare an instance of the 'data' structure
+  struct data node;
+
+  // Print the size of the structure
+  printf("sizeofstruct:%ld \n", sizeof(node));
+
+  // Assign values to the bit fields using bitwise operations
+  uint32_t val = 0x325FA397;
+  node.crc = (uint8_t)val & 0xF;
+  node.status = (uint8_t)((val >> 4) & 0x3);
+  node.payload = (uint16_t)((val >> 6) & 0x3FF);
+  node.bat = (uint8_t)((val >> 16) & 0x1F);
+  node.sensor = (uint8_t)((val >> 21) & 0x7);
+  node.addr_long = (uint8_t)((val >> 24) & 0xF);
+  node.addr_short = (uint8_t)((val >> 28) & 0x7);
+  node.led_status = (uint8_t)((val >> 31) & 0x1);
+
+  // Print the values stored in each bit field
+  printf("crc = %x\n", node.crc);
+  printf("status = %x \n", node.status);
+  printf("payload = %x\n", node.payload);
+  printf("bat = %x \n", node.bat);
+  printf("sensor = %x \n", node.sensor);
+  printf("addr_long = %x \n", node.addr_long);
+  printf("addr_short = %x \n", node.addr_short);
+  printf("led_status = %x \n", node.led_status);
+
+  return 0;
+}
